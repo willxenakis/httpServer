@@ -1,0 +1,91 @@
+<html>
+    <head>
+            <style>
+                    .collapsible {
+                      background-color: #777;
+                      color: white;
+                      cursor: pointer;
+                      padding: 18px;
+                      width: 100%;
+                      border: none;
+                      text-align: left;
+                      outline: none;
+                      font-size: 20px;
+                    }
+                    
+                    .active, .collapsible:hover {
+                      background-color: #555;
+                    }
+                    
+                    .content {
+                      padding: 0 18px;
+                      display: none;
+                      overflow: hidden;
+                      background-color: #f1f1f1;
+                    }
+            </style>
+    </head>
+    <body>
+        <div>
+                {% for block in blocks %}
+                    <button class="collapsible" style="margin-bottom: 10px">Block {{block.index}}:</button>
+                    <div class="content">
+                        <div>
+                          <ul>
+                              <li>TimeStamp: {{block.timeStamp}}
+                              </li>
+                              <li>Nonce: {{block.nonce}}
+                              </li>
+                              <li>Current Hash: {{block.currHash}}
+                              </li>
+                              <li>Previous Hash: {{block.prevHash}}
+                              </li>
+                              <li>Merkle Root: {{block.merkleRoot}}</li>
+                          </ul>
+                        </div>
+                        <button class = "collapsible">Transactions</button>
+                        <div class="content">
+                            {% for transaction in block.data %}
+                            <ul>  
+                              <button class="collapsible" style="margin-bottom:10px">Transaction {{loop.index}}:</button>
+                              <div class="content" style="padding-top: 20px">
+                                  <li style="word-wrap: break-word;">
+                                      SenderPub: {{transaction.senderPub}}
+                                  </li>
+                                  <li style="word-wrap: break-word;">
+                                      ReceiverPub: {{transaction.receiverPub}}
+                                  </li>
+                                  <li>
+                                      TimeStamp: {{transaction.timeStamp}}
+                                  </li>
+                                  <li>
+                                      Operation: {{transaction.op}}
+                                  </li>
+                                  <li>
+                                      Hash: {{transaction.hash}}
+                                  </li>
+                              </div>
+                            </ul>
+                            {% endfor %}
+                        </div>
+                    </div>     
+              {% endfor %}
+        </div>
+    </body>
+    <script>
+            var coll = document.getElementsByClassName("collapsible");
+            var i;
+            
+            for (i = 0; i < coll.length; i++) {
+              coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                  content.style.display = "none";
+                } else {
+                  content.style.display = "block";
+                }
+              });
+            }
+    </script>
+</html>
